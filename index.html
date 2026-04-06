@@ -28,10 +28,17 @@
             margin: 0;
             background-color: var(--bg-color);
             -webkit-user-select: none;
+            overflow: hidden; /* 회전 시 스크롤 방지 */
         }
 
         .card-container {
             perspective: 1000px;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* [핵심] 회전 상태 클래스 */
+        .rotated {
+            transform: rotate(90deg) scale(1.5); /* 90도 회전 및 1.5배 확대 */
         }
 
         .business-card {
@@ -43,142 +50,65 @@
             display: flex;
             padding: 15px 20px;
             box-sizing: border-box;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+            transition: transform 0.1s ease-out;
             position: relative;
-            overflow: hidden;
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        .business-card:active {
-            transform: translateY(-3px) rotateX(2deg) scale(1.01);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-        }
-
-        .card-left {
-            flex: 1.1;
+        /* 떠 있는 회전 버튼 (FAB) */
+        .rotate-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--priming-navy);
+            color: white;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-right: 1px solid #f0f0f0;
-            margin-right: 15px;
-            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            cursor: pointer;
+            font-size: 24px;
+            border: none;
+            transition: transform 0.2s;
         }
 
-        /* QR 코드 스타일 유지 */
-        .qr-code {
-            width: 45px;
-            height: 45px;
-            margin-bottom: 10px;
-            padding: 2px;
-            border: 1px solid #eee;
-            border-radius: 4px;
+        .rotate-button:active {
+            transform: scale(0.9);
+            background-color: var(--priming-blue);
         }
 
-        .logo-v2 {
-            width: 50px;
-            height: auto;
-            margin-bottom: 6px;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--priming-navy);
-            line-height: 1.1;
-        }
-
-        .logo-sub {
-            font-size: 6.5px;
-            color: var(--priming-blue);
-            margin-top: 3px;
-            letter-spacing: 0.1px;
-        }
-
-        .card-right {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .name-area h1 {
-            margin: 0;
-            font-size: 20px;
-            color: #000;
-            letter-spacing: -0.5px;
-        }
-        
-        .name-area p {
-            margin: 2px 0 0 0;
-            font-size: 10px;
-            color: var(--priming-blue);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .solution-list {
-            font-size: 9px;
-            color: var(--list-gray);
-            margin: 8px 0;
-            padding: 0;
-            list-style: none;
-            line-height: 1.4;
-        }
-
-        .solution-list li::before {
-            content: "•";
-            color: var(--priming-blue);
-            margin-right: 4px;
-        }
-
-        .contact-area {
-            font-size: 10px;
-            color: var(--text-gray);
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-        }
-        
-        .contact-area a {
-            text-decoration: none;
-            color: inherit;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .contact-area a:active {
-            background-color: var(--touch-highlight);
-            color: var(--priming-blue);
-            transform: scale(0.97);
-        }
-
-        .contact-area a::before {
-            font-size: 9px;
-            opacity: 0.7;
-        }
+        /* 나머지 기존 스타일 유지 */
+        .card-left { flex: 1.1; display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 1px solid #f0f0f0; margin-right: 15px; text-align: center; }
+        .qr-code { width: 45px; height: 45px; margin-bottom: 10px; padding: 2px; border: 1px solid #eee; border-radius: 4px; }
+        .logo-v2 { width: 50px; height: auto; margin-bottom: 6px; object-fit: contain; }
+        .logo-text { font-size: 12px; font-weight: 800; color: var(--priming-navy); line-height: 1.1; }
+        .logo-sub { font-size: 6.5px; color: var(--priming-blue); margin-top: 3px; letter-spacing: 0.1px; }
+        .card-right { flex: 2; display: flex; flex-direction: column; justify-content: space-between; }
+        .name-area h1 { margin: 0; font-size: 20px; color: #000; letter-spacing: -0.5px; }
+        .name-area p { margin: 2px 0 0 0; font-size: 10px; color: var(--priming-blue); font-weight: 700; letter-spacing: 0.5px; }
+        .solution-list { font-size: 9px; color: var(--list-gray); margin: 8px 0; padding: 0; list-style: none; line-height: 1.4; }
+        .solution-list li::before { content: "•"; color: var(--priming-blue); margin-right: 4px; }
+        .contact-area { font-size: 10px; color: var(--text-gray); text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .contact-area a { text-decoration: none; color: inherit; padding: 2px 6px; border-radius: 4px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .contact-area a:active { background-color: var(--touch-highlight); color: var(--priming-blue); }
+        .contact-area a::before { font-size: 9px; opacity: 0.7; }
         .link-tel::before { content: "📞"; }
         .link-mail::before { content: "✉️"; }
         .link-web::before { content: "🌐"; }
-
     </style>
 </head>
 <body>
 
-    <div class="card-container">
+    <button class="rotate-button" onclick="toggleRotate()">🔄</button>
+
+    <div id="cardContainer" class="card-container">
         <div class="business-card">
-            
             <div class="card-left">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nambongwoo.github.io/name_card/" 
-                     alt="QR Code" class="qr-code">
-                
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nambongwoo.github.io/name_card/" alt="QR Code" class="qr-code">
                 <img src="logo_v2.png" alt="Logo" class="logo-v2">
                 <div class="logo-text">PRIMING<br>SOLUTIONS</div>
                 <div class="logo-sub">ADVANCED WATER PREPARATION</div>
@@ -189,21 +119,25 @@
                     <h1>DANIEL NAM</h1>
                     <p>Managing Director</p>
                 </div>
-
                 <ul class="solution-list">
                     <li>Fintech Software Consulting</li>
                     <li>Strategic Project Management</li>
                 </ul>
-
                 <div class="contact-area">
                     <a href="tel:010-5448-3246" class="link-tel">010.5448.3246</a>
                     <a href="mailto:sixvalue@gmail.com" class="link-mail">sixvalue@gmail.com</a>
                     <a href="https://priming-sol.vercel.app" target="_blank" class="link-web">priming-sol.vercel.app</a>
                 </div>
             </div>
-
         </div>
     </div>
+
+    <script>
+        function toggleRotate() {
+            const container = document.getElementById('cardContainer');
+            container.classList.toggle('rotated');
+        }
+    </script>
 
 </body>
 </html>
