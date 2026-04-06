@@ -41,7 +41,7 @@
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             display: flex;
-            padding: 15px 20px; /* QR 공간 확보를 위해 패딩 소폭 조정 */
+            padding: 15px 20px;
             box-sizing: border-box;
             transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
             position: relative;
@@ -58,25 +58,25 @@
             flex: 1.1;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* QR-로고가 중앙에 오도록 */
+            justify-content: center;
             align-items: center;
             border-right: 1px solid #f0f0f0;
             margin-right: 15px;
             text-align: center;
         }
 
-        /* QR 코드 스타일 */
+        /* QR 코드 스타일 유지 */
         .qr-code {
             width: 45px;
             height: 45px;
-            margin-bottom: 10px; /* 로고와의 간격 */
+            margin-bottom: 10px;
             padding: 2px;
             border: 1px solid #eee;
             border-radius: 4px;
         }
 
         .logo-v2 {
-            width: 50px; /* QR 추가로 크기 소폭 최적화 */
+            width: 50px;
             height: auto;
             margin-bottom: 6px;
             object-fit: contain;
@@ -176,7 +176,7 @@
         <div class="business-card">
             
             <div class="card-left">
-                <img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=https://nambongwoo.github.io/name_card/&choe=UTF-8" 
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://nambongwoo.github.io/name_card/" 
                      alt="QR Code" class="qr-code">
                 
                 <img src="logo_v2.png" alt="Logo" class="logo-v2">
