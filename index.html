@@ -1,165 +1,212 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>비즈니스 카드_남봉우</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon_priming.png"> <style>
-        :root {
-            --bg-color: #f4f4f7;
-            --card-white: #ffffff;
-            --priming-navy: #1a2a40; /* 프라이밍 솔루션 메인 컬러 (짙은 네이비) */
-            --point-gold: #c6a77d; /* 서브 컬러 (골드 포인트) */
-            --text-gray: #555555;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Priming Solutions_PWA</title>
+    
+        <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="logo_priming.png">     <style>
+        :root {
+            --bg-color: #f4f4f7;
+            --card-white: #ffffff;
+            --priming-navy: #1a2a40; /* 프라이밍 솔루션 메인 컬러 (짙은 네이비) */
+            --text-gray: #555555;
+            --list-gray: #777777;
+        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: var(--bg-color);
-            -webkit-user-select: none; /* 텍스트 드래그 방지 (앱처럼 보이기 위해) */
-        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            -webkit-user-select: none; /* 텍스트 드래그 방지 */
+        }
 
-        /* 명함 케이스(컨테이너) */
-        .card-container {
-            perspective: 1000px; /* 3D 효과를 위한 원근감 */
-        }
+        /* 명함 케이스 (3D 원근감) */
+        .card-container {
+            perspective: 1000px;
+        }
 
-        /* 실제 명함 디자인 */
-        .business-card {
-            width: 330px; /* 아이폰 화면 폭에 맞춘 표준 명함 비율 */
-            height: 190px;
-            background: var(--card-white);
-            border-radius: 8px; /* 실제 명함의 미세한 곡률 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: flex;
-            padding: 25px;
-            box-sizing: border-box;
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; /* 터치 피드백 애니메이션 */
-            position: relative;
-            overflow: hidden;
-        }
+        /* 실제 명함 디자인 (새로운 레이아웃) */
+        .business-card {
+            width: 330px;
+            height: 190px;
+            background: var(--card-white);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; /* 터치 피드백 애니메이션 */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* 세로 기반 레이아웃 */
+            padding: 20px 25px; /* 새로운 패딩 */
+            box-sizing: border-box;
+        }
 
-        /* 눌렀을 때 살짝 튀어 오르는 효과 (햅틱 반응 느낌) */
-        .business-card:active {
-            transform: translateY(-5px) rotateX(2deg) scale(1.02);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
+        /* 눌렀을 때 햅틱 효과 */
+        .business-card:active {
+            transform: translateY(-5px) rotateX(2deg) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
 
-        /* 명함 우측 하단 골드 라인 포인트 */
-        .business-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 100px;
-            height: 4px;
-            background-color: var(--point-gold);
-        }
+        /* --- 새로운 레이아웃 설정 --- */
 
-        /* --- 레이아웃 설정 --- */
+        /* 상단: 로고 영역 */
+        .logo_header {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* 로고와 텍스트의 하단을 맞춤 */
+            padding-bottom: 5px;
+        }
 
-        /* 좌측: 로고 */
-        .card-left {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-right: 1px solid #eee; /* 세로 구분선 */
-            margin-right: 20px;
-        }
+        .logo_icon {
+            height: 32px; /* 로고 이미지 크기 조절 */
+            margin-right: 10px;
+        }
 
-        .logo-area {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--priming-navy);
-            letter-spacing: -1px;
-        }
+        .company-name-group {
+            text-align: left;
+        }
 
-        /* 우측: 정보 */
-        .card-right {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding-left: 5px;
-        }
+        .company_name {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--priming-navy);
+            letter-spacing: -1px;
+        }
 
-        /* 이름/직함 */
-        .name-area h1 {
-            margin: 0;
-            font-size: 22px;
-            color: #000;
-        }
-        
-        .name-area p {
-            margin: 3px 0 0 0;
-            font-size: 13px;
-            color: var(--text-gray);
-            letter-spacing: 1px;
-        }
+        .company_slogan {
+            font-size: 11px;
+            color: var(--list-gray);
+            margin-top: -2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        /* 연락처 정보 */
-        .contact-area {
-            font-size: 12px;
-            color: var(--text-gray);
-            line-height: 1.6;
-        }
-        
-        /* 연락처 링크 스타일 제거 */
-        .contact-area a {
-            text-decoration: none;
-            color: inherit;
-        }
+        /* 중앙/하단: 솔루션 리스트와 개인 정보 */
+        .card_body {
+            flex: 1.5;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #f0f0f0; /* 상단과 하단을 나누는 선 */
+            padding-top: 15px;
+        }
 
-        /* 자문 파트너 정보 */
-        .partner-area {
-            font-size: 11px;
-            color: #aaa;
-            margin-top: 10px;
-            border-top: 1px solid #f0f0f0;
-            padding-top: 5px;
-        }
+        /* 좌측 하단: 통합 솔루션 리스트 */
+        .solutions_area {
+            flex: 1;
+            font-size: 10px;
+            color: var(--list-gray);
+            line-height: 1.3;
+        }
 
-    </style>
+        .solutions_area h3 {
+            font-size: 11px;
+            color: var(--priming-navy);
+            margin: 0 0 5px 0;
+            font-weight: 700;
+        }
+
+        .solutions_area ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .solutions_area li {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 2px;
+        }
+
+        /* 숫자 포인트 */
+        .solutions_area li::before {
+            content: attr(data-num);
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-weight: 700;
+            color: #3498db; /* 로고와 같은 블루 포인트 */
+            font-size: 9px;
+        }
+
+        /* 우측 하단: 개인 정보 영역 */
+        .info_area {
+            flex: 1;
+            text-align: right;
+            font-size: 11px;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+
+        /* 이름/직함 */
+        .name_area h1 {
+            margin: 0;
+            font-size: 19px;
+            color: #000;
+        }
+        
+        .name_area p {
+            margin: 1px 0 10px 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* 연락처 정보 (링크 스타일 제거) */
+        .info_area a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+    </style>
 </head>
 <body>
 
-    <div class="card-container">
-        <div class="business-card">
-            
-            <div class="card-left">
-                <div class="logo-area">
-                    Priming<br>Solutions
-                </div>
-            </div>
+    <div class="card-container">
+                <div class="business-card">
+            
+                        <div class="logo_header">
+                                <img src="logo_priming.png" alt="Priming Solutions Logo" class="logo_icon">
 
-            <div class="card-right">
-                <div class="name-area">
-                    <h1>남 봉 우</h1>
-                    <p>CEO / Representative Director</p>
-                </div>
+                                                <div class="company-name-group">
+                    <div class="company_name">PRIMING SOLUTIONS</div>
+                    <div class="company_slogan">Advanced Water Preparation</div>
+                </div>
+            </div>
 
-                <div class="contact-area">
-                    T. <a href="tel:010-0000-0000">010.0000.0000</a><br>
-                    E. <a href="mailto:ceo@priming.sol">ceo@priming.sol</a><br>
-                    Web. <a href="#" target="_blank">www.priming.sol</a>
-                </div>
+                        <div class="card_body">
+                
+                                <div class="solutions_area">
+                    <h3>Our Integrated Advanced Solutions:</h3>
+                    <ul>
+                        <li data-num="1.">Advanced Water Purification (Microfiltration, Reverse Osmosis)</li>
+                        <li data-num="2.">Industrial & Process Water Treatment</li>
+                        <li data-num="3.">Strategic Project Planning & Management</li>
+                        <li data-num="4.">Integrated Technical Consulting & Strategy</li>
+                    </ul>
+                </div>
 
-                <div class="partner-area">
-                    마중물 장학재단 자문 파트너
-                </div>
-            </div>
+                                <div class="info_area">
+                    <div class="name_area">
+                        <h1>남 봉 우</h1>
+                        <p>대표이사</p>
+                    </div>
 
-        </div>
-    </div>
+                                        T. <a href="tel:010-5448-3246">010-5448-3246</a><br>
+                    E. <a href="mailto:sixvalue@gmail.com">sixvalue@gmail.com</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 </body>
 </html>
