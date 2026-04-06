@@ -17,6 +17,11 @@
             --text-gray: #555555;
             --list-gray: #777777;
             --touch-highlight: #ebf5fb;
+            /* 은은한 버튼을 위한 반투명 컬러 */
+            --btn-glass-bg: rgba(255, 255, 255, 0.4); 
+            --btn-glass-border: rgba(255, 255, 255, 0.2);
+            --btn-glass-shadow: rgba(0, 0, 0, 0.05);
+            --btn-glass-active: rgba(52, 152, 219, 0.5); /* 터치 시 푸른 반투명 */
         }
 
         body {
@@ -33,12 +38,12 @@
 
         .card-container {
             perspective: 1000px;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* 더 부드럽고 자연스러운 회전 */
         }
 
-        /* [핵심] 회전 상태 클래스 */
+        /* [핵심] 가로 회전 상태 클래스 */
         .rotated {
-            transform: rotate(90deg) scale(1.5); /* 90도 회전 및 1.5배 확대 */
+            transform: rotate(90deg) scale(1.6); /* 90도 회전 및 1.6배 확대 (시원하게) */
         }
 
         .business-card {
@@ -55,30 +60,43 @@
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* 떠 있는 회전 버튼 (FAB) */
+        /* [해결] 은은한 유리 지갑 스타일 회전 버튼 (FAB) */
         .rotate-button {
             position: fixed;
-            bottom: 30px;
+            bottom: 30px; /* 기본 위치 (세로 모드) */
             right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--priming-navy);
-            color: white;
+            width: 48px;
+            height: 48px;
+            background-color: var(--btn-glass-bg);
+            color: var(--priming-navy);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px var(--btn-glass-shadow);
             z-index: 1000;
             cursor: pointer;
-            font-size: 24px;
-            border: none;
-            transition: transform 0.2s;
+            font-size: 20px;
+            /* 테두리와 배경 blur 효과로 '은은함' 구현 */
+            border: 1px solid var(--btn-glass-border);
+            -webkit-backdrop-filter: blur(8px); /* 사파리 지원 필수 */
+            backdrop-filter: blur(8px);
+            transition: all 0.4s ease-out; /* 부드러운 위치/색상 변화 */
         }
 
+        /* 터치 시 피드백 */
         .rotate-button:active {
-            transform: scale(0.9);
-            background-color: var(--priming-blue);
+            transform: scale(0.9) translateY(2px);
+            background-color: var(--btn-glass-active);
+            color: white;
+        }
+
+        /* [해결] 회전 시 버튼 위치 변경 클래스 (내용을 가리지 않게) */
+        .button-rotated-pos {
+            bottom: 15px; /* 가로 모드 시 명함 아래쪽으로 이동 */
+            right: 15px;
+            transform: scale(0.85); /* 약간 작게 */
+            opacity: 0.8; /* 더 은은하게 */
         }
 
         /* 나머지 기존 스타일 유지 */
@@ -103,7 +121,7 @@
 </head>
 <body>
 
-    <button class="rotate-button" onclick="toggleRotate()">🔄</button>
+    <button id="rotateBtn" class="rotate-button" onclick="toggleRotate()">🔄</button>
 
     <div id="cardContainer" class="card-container">
         <div class="business-card">
@@ -117,9 +135,10 @@
             <div class="card-right">
                 <div class="name-area">
                     <h1>DANIEL NAM</h1>
-                    <p>Managing Director</p>
+                    <p>Managing Director / Founder</p>
                 </div>
                 <ul class="solution-list">
+                    <li>Global Foundation Expansion Strategy</li>
                     <li>Fintech Software Consulting</li>
                     <li>Strategic Project Management</li>
                 </ul>
@@ -135,7 +154,12 @@
     <script>
         function toggleRotate() {
             const container = document.getElementById('cardContainer');
+            const btn = document.getElementById('rotateBtn');
+            
+            // 명함 회전 토글
             container.classList.toggle('rotated');
+            // [해결] 버튼 위치 변경 클래스 토글 (가로 모드 시 내용을 안 가리게)
+            btn.classList.toggle('button-rotated-pos');
         }
     </script>
 
